@@ -9,4 +9,4 @@ Replace with your Awtrix IP
 
 tested with Awtrix3 version 0.96
 
-<img width="600" alt="screenshot" src="https://github.com/user-attachments/assets/931aebb1-6160-447b-8401-61990ba86027">
+![Awtrix3 Pixel Clock Controller](https://github.com/user-attachments/assets/058752bf-555b-4b7d-ac99-c49051ff36cd)
