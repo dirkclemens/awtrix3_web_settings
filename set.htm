@@ -40,7 +40,7 @@
         <form id="settings-form">
         
             <div class="form-group">
-              <div class="row">
+            <div class="row">
             <div class="col-md-3">
                  <label for="atime">Duration:</label>
                  <input type="number" class="form-control" id="atime" min="0" max="7" name="atime" required>
@@ -93,7 +93,7 @@
                <div class="col-md-3">
                  <label for="tmode">App stype:</label>
                  <input type="number" class="form-control" id="tmode" name="tmode" required>
-              </div>
+              </div>              
              </div>
            </div>
 
@@ -155,6 +155,48 @@
 
         <hr>
 
+        <div class="container mt-5">
+          <form id="notifyForm">
+            
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3">
+                <label for="notify_icon">Icon ID</label>
+                <input type="number" class="form-control" id="notify_icon" name="notify_icon" placeholder="Enter icon ID (e.g., 2867)">
+                </div>
+                <div class="col-md-3">
+                  <label for="notify_duration">Duration (seconds)</label>
+                  <input type="number" class="form-control" id="notify_duration" name="notify_duration" placeholder="10" required>
+                </div>
+                <div class="col-md-3">
+                  <label for="notify_color">Text Color</label>
+                  <input type="color" class="form-control" id="notify_color" name="notify_color" value="#ffffff" required>
+                </div>
+                <div class="col-md-3">
+                  <label for="notify_background">Background Color</label>
+                  <input type="color" class="form-control" id="notify_background" name="notify_background" value="#000000" required>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-9">
+                  <label for="notify_text">Notification Text</label>
+                  <input type="text" class="form-control" id="notify_text" name="notify_text" placeholder="Enter notification text" required>
+                </div>
+                <div class="col-md-3">
+                  <label for="text">Send Notification Text</label><br />
+                  <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      <hr>
+
         <div class="row">
             <div class="col-md-6">
                 <h3>Current Settings</h3>
@@ -168,7 +210,7 @@
     </div>
 
     <script>
-        const baseUrl = 'http://127.0.0.1/api'; // Replace with your Awtrix IP
+        const baseUrl = 'http://192.168.2.144/api'; // Replace with your Awtrix IP
 
         function updateSettings() {
             const atime = $('#atime').val();
@@ -215,6 +257,41 @@
             });
         }
 
+       // Handle notification form submission
+        $('#notifyForm').submit(function(event) {
+          event.preventDefault();
+      
+          // Get form data
+          const text = $('#notify_text').val();
+          const icon = $('#notify_icon').val();
+          const duration = $('#notify_duration').val();
+          const color = $('#notify_color').val();
+          const background = $('#notify_background').val();
+      
+          // Create JSON payload
+          const notifyData = {
+            text: text,
+            icon: icon,
+            duration: duration,
+            color: color,
+            background: background
+          };
+      
+          // Send notification via POST request to AWTRIX API
+          $.ajax({
+            url: `${baseUrl}/notify`, // Adjust this URL based on the API documentation
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(notifyData),
+            success: function(response) { // Display success status
+              console.error('notifyData:', response);
+            },
+            error: function(xhr, status, error) {
+              console.error('Error sending notification:', error);
+            }
+          });
+        });
+        
         function fetchSettings() {
             $.ajax({
                 url: `${baseUrl}/settings`, // Adjust this URL based on the API documentation
@@ -296,6 +373,7 @@
         
         $(document).ready(function() {
             fetchSettings();
+            $('#notify_duration').val(10);
         });
     </script>
 </body>
